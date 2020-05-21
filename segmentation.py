@@ -8,17 +8,20 @@ Created on Thu May  7 08:45:18 2020
 
 import cv2
 import numpy as np
+import os
 
 # reading the image
-img = cv2.imread('enclosed/0.jpg', 1)
- 
+print('reading image')
+img = cv2.imread('untitled/0.jpg', 1)
+print('image read')
+
 # convert the image to grayscale
 gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
  
 # convert the grayscale image to binary image
-ret,thresh = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU)
+ret, thresh = cv2.threshold(gray_image, 0, 255, cv2.THRESH_BINARY_INV|cv2.THRESH_OTSU)
 
-def fill(image, save = False):
+def fill(image, save = True):
     """
     Parameters
     ----------
@@ -49,9 +52,12 @@ def fill(image, save = False):
         cv2.imwrite("filled.jpg", mask)
     return mask
 
-filled = fill(thresh)
 
-def removeLines(image, save = False):
+filled = fill(thresh)
+print('image filled')
+
+
+def removeLines(image, save = True):
     """
     Parameters
     ----------
@@ -75,9 +81,11 @@ def removeLines(image, save = False):
         cv2.imwrite("no lines.jpg", no_line)
     return no_line
 
-no_line = removeLines(filled, save = True)
 
-def getEnclosed(no_line, image, output_size = 120, save = False):
+no_line = removeLines(filled, save = True)
+print('lines removed')
+
+def getEnclosed(no_line, image, output_size = 120, save = True):
     """
     Parameters
     ----------
@@ -130,5 +138,7 @@ def getEnclosed(no_line, image, output_size = 120, save = False):
         ROI_number += 1
         
     return regions
-        
+
+
 regions = getEnclosed(no_line, thresh, save = True)
+print('enclosed')
